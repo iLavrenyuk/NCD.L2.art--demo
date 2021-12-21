@@ -50,7 +50,7 @@ export const ChangeContract = () => {
               <p className="mt-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-blue-400 text-center font-bold text-sm">
                 Current ID:
               </p>
-              <p className="text-black text-center font-bold text-sm">“dev-1635829277525-2258924695353”</p>
+              <p className="text-black text-center font-bold text-sm">{contractId}</p>
             </>
           )}
         </div>
