@@ -8,16 +8,16 @@ export const StoreProvider = ({ children }) => {
   const contractId = localStorage.getItem('CONTRACT_ID');
   !contractId && localStorage.setItem('CONTRACT_ID', defaultContractId);
 
-  const [data, setData] = useState(contractId ?? defaultContractId);
+  const [contractData, setContractData] = useState(contractId ?? defaultContractId);
+  const [accountId, setAccountId] = useState(wallet.getAccountId());
+  const [apiError, setApiError] = useState();
 
   const setContractId = (contractId) => {
     localStorage.setItem('CONTRACT_ID', contractId);
-    setData(contractId);
+    setContractData(contractId);
   };
 
-  const [accountId, setAccountId] = useState(wallet.getAccountId());
-
-  const store = { contractId: data, setContractId, accountId, setAccountId };
+  const store = { contractId: contractData, setContractId, accountId, setAccountId, apiError, setApiError };
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>;
 };

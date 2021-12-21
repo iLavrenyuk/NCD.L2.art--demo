@@ -6,7 +6,7 @@ import { routes } from '../../router/routes';
 import { burnDesign, claimDesign, generateDesign, getTempDesign, getViewMyDesign, signOut } from '../../services/near';
 
 export const Dashboard = () => {
-  const { accountId, setAccountId } = useStore();
+  const { accountId, setAccountId, setApiError } = useStore();
   const [generatedDesign, setGeneratedDesign] = useState();
   const [myDesign, setMyDesign] = useState();
   const [inputSeed, setInputSeed] = useState();
@@ -52,7 +52,8 @@ export const Dashboard = () => {
       setMyDesign(await getViewMyDesign(accountId));
       setIsLoading(false);
     } catch (e) {
-      console.log(e);
+      setApiError(e);
+      setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);
