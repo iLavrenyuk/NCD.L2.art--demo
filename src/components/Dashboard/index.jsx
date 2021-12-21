@@ -20,6 +20,7 @@ export const Dashboard = () => {
   const handleBurnDesign = async () => {
     setIsLoading(true);
     await burnDesign();
+    setMyDesign(null);
     setIsLoading(false);
   };
 
@@ -44,7 +45,7 @@ export const Dashboard = () => {
       setIsLoading(true);
       const tempDesign = await getTempDesign(accountId);
       setGeneratedDesign(tempDesign);
-      setInputSeed(tempDesign.seed);
+      setInputSeed(tempDesign?.seed);
       if (!tempDesign) {
         await handleGenerateDesign(accountId);
       }
