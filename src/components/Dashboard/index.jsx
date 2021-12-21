@@ -62,7 +62,7 @@ export const Dashboard = () => {
 
   return (
     <>
-      <LoadingOverlay active={isLoading} spinner className="loader" />
+      <LoadingOverlay active={isLoading} spinner className={isLoading ? 'loader' : ''} />
       <div className="flex">
         <div className="relative hidden lg:block dashboard-profile h-auto">
           <img src={require('../../assets/romb.png').default} alt="" className="absolute w-20 left-0 -top-6" />
