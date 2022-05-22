@@ -3,18 +3,31 @@ import { useStore } from '../../store';
 import { signIn } from '../../services/near';
 import { routes } from '../../router/routes';
 import { useNavigate } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 export const Home = () => {
-  const { accountId } = useStore();
+  const { accountId, setApiError } = useStore();
+
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
+  const { addToast } = useToasts();
+
+  const handleSignIn = async () => {
     if (accountId) {
       navigate(routes.Dashboard);
     } else {
       const mainUrl = process.env.REACT_APP_MAIN_URL;
       const successUrl = mainUrl ? mainUrl + routes.Dashboard : undefined;
-      signIn(successUrl);
+      try {
+        await signIn(successUrl);
+      } catch (error) {
+        setApiError(error);
+        addToast(error.message, {
+          appearance: 'error',
+          autoDismiss: true,
+          autoDismissTimeout: 30000,
+        });
+      }
     }
   };
 

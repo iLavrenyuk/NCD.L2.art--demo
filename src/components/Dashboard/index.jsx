@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useStore } from '../../store';
 import { Link } from 'react-router-dom';
 import { routes } from '../../router/routes';
+import { useToasts } from 'react-toast-notifications';
+import { cutFilename } from '../../helper/errorHelper';
 import { burnDesign, claimDesign, generateDesign, getTempDesign, getViewMyDesign, signOut } from '../../services/near';
 
 export const Dashboard = () => {
@@ -12,6 +14,8 @@ export const Dashboard = () => {
   const [inputSeed, setInputSeed] = useState();
   const [isLoading, setIsLoading] = useState();
 
+  const { addToast } = useToasts();
+
   const handleSignOut = () => {
     signOut();
     setAccountId(null);
@@ -19,24 +23,50 @@ export const Dashboard = () => {
 
   const handleBurnDesign = async () => {
     setIsLoading(true);
-    await burnDesign();
-    setMyDesign(null);
+    try {
+      await burnDesign();
+      setMyDesign(null);
+    } catch (error) {
+      const errorMessage = error?.kind?.ExecutionError;
+      addToast(cutFilename(errorMessage), {
+        appearance: 'error',
+        autoDismiss: true,
+        autoDismissTimeout: 30000,
+      });
+    }
     setIsLoading(false);
   };
 
   const handleGenerateDesign = async () => {
     setIsLoading(true);
-    await generateDesign(accountId);
-    const tempDesign = await getTempDesign(accountId);
-    setGeneratedDesign(tempDesign);
-    setInputSeed(tempDesign.seed);
+    try {
+      await generateDesign(accountId);
+      const tempDesign = await getTempDesign(accountId);
+      setGeneratedDesign(tempDesign);
+      setInputSeed(tempDesign.seed);
+    } catch (error) {
+      addToast(error.message, {
+        appearance: 'error',
+        autoDismiss: true,
+        autoDismissTimeout: 30000,
+      });
+    }
     setIsLoading(false);
   };
 
   const handleClaimDesign = async () => {
     setIsLoading(true);
-    await claimDesign(inputSeed);
-    setMyDesign(await getViewMyDesign(accountId));
+    try {
+      await claimDesign(inputSeed);
+      setMyDesign(await getViewMyDesign(accountId));
+    } catch (error) {
+      const errorMessage = error?.kind?.ExecutionError;
+      addToast(cutFilename(errorMessage), {
+        appearance: 'error',
+        autoDismiss: true,
+        autoDismissTimeout: 30000,
+      });
+    }
     setIsLoading(false);
   };
 
@@ -51,9 +81,14 @@ export const Dashboard = () => {
       }
       setMyDesign(await getViewMyDesign(accountId));
       setIsLoading(false);
-    } catch (e) {
-      setApiError(e);
+    } catch (error) {
+      setApiError(error);
       setIsLoading(false);
+      addToast(error.message, {
+        appearance: 'error',
+        autoDismiss: true,
+        autoDismissTimeout: 30000,
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);
@@ -149,7 +184,7 @@ export const Dashboard = () => {
                     type="text"
                     className="placeholder-current text-gray-500 focus:text-black dashboard-search outline-none pl-16 py-4 font-bold"
                     value={inputSeed}
-                    onChange={(e) => setInputSeed(Number(e.target.value))}
+                    onChange={(e) => setInputSeed(parseInt(e.target.value))}
                   />
                   <button
                     onClick={handleClaimDesign}

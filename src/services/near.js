@@ -1,7 +1,7 @@
 import BN from 'bn.js';
-import { keyStores, Near, WalletConnection } from 'near-api-js';
+import { keyStores, Near, WalletConnection, Contract } from 'near-api-js';
 
-const CONTRACT_ID = localStorage.getItem('CONTRACT_ID');
+const getContractID = () => localStorage.getItem('CONTRACT_ID');
 const gas = new BN('100000000000000');
 
 // use new NEAR to avoid async/await
@@ -12,29 +12,34 @@ export const near = new Near({
   walletUrl: 'https://wallet.testnet.near.org',
 });
 
-export const wallet = new WalletConnection(near, 'artdemo');
+export const wallet = () => new WalletConnection(near, getContractID());
 
 export const signIn = (successUrl) => {
-  return wallet.requestSignIn({ contractId: CONTRACT_ID, successUrl });
+  return wallet().requestSignIn({ contractId: getContractID(), successUrl });
 };
 
 export const signOut = () => {
-  return wallet.signOut(CONTRACT_ID);
+  return wallet().signOut(getContractID());
 };
 
 export const getTempDesign = (accountId) => {
-  return wallet.account().viewFunction(CONTRACT_ID, 'getTempDesign', { accountId });
+  return wallet().account().viewFunction(getContractID(), 'getTempDesign', { accountId });
 };
 
 export const getViewMyDesign = (accountId) => {
-  return wallet.account().viewFunction(CONTRACT_ID, 'viewMyDesign', { accountId });
+  return wallet().account().viewFunction(getContractID(), 'viewMyDesign', { accountId });
 };
+
+export const contract = () =>
+  new Contract(wallet().account(), getContractID(), {
+    viewMethods: [''],
+    changeMethods: ['design', 'claimMyDesign', 'burnMyDesign'],
+    sender: wallet().account(),
+  });
 
 //function to generate new design
 export const generateDesign = (accountId) => {
-  return wallet.account().functionCall({
-    contractId: CONTRACT_ID,
-    methodName: 'design',
+  return contract().design({
     gas,
     args: { accountId },
   });
@@ -42,19 +47,11 @@ export const generateDesign = (accountId) => {
 
 //function to claim existing design
 export const claimDesign = (seed) => {
-  return wallet.account().functionCall({
-    contractId: CONTRACT_ID,
-    methodName: 'claimMyDesign',
+  return contract().claimMyDesign({
     gas,
     args: { seed },
   });
 };
 
 //function to burn design
-export const burnDesign = () => {
-  return wallet.account().functionCall({
-    contractId: CONTRACT_ID,
-    methodName: 'burnMyDesign',
-    gas,
-  });
-};
+export const burnDesign = () => contract().burnMyDesign();

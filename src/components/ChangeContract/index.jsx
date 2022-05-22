@@ -138,7 +138,7 @@ export const ChangeContract = () => {
             <p className="mx-auto text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-blue-400 text-center text-sm font-semibold">
               Current ID
             </p>
-            <p className="text-center text-black text-sm font-semibold">“dev-1635829277525-2258924695353”</p>
+            <p className="text-center text-black text-sm font-semibold">{contractId}</p>
           </div>
 
           <form className="w-full mt-6">
@@ -147,7 +147,7 @@ export const ChangeContract = () => {
               onChange={handleChange}
               value={inputContract}
               type="text"
-              placeholder="Enter a seed name"
+              placeholder="Set your Contract ID"
               className={`popup-input${
                 apiError ? '-error' : ''
               } w-full h-14 outline-none pl-6 font-bold placeholder-gray-500`}
@@ -164,7 +164,7 @@ export const ChangeContract = () => {
 
             <button
               onClick={setDefaultContractId}
-              className="w-full h-14 text-red-400 font-semibold mt-5 border border-red-400 rounded-full hover:bg-red-400 hover:text-white transform active:scale-95 duration-150"
+              className="w-full h-14 text-red-400 font-semibold mt-5 border border-red-400 rounded-full hover:bg-red-400 hover:text-white transform active:scale-95 duration-150 cursor-pointer"
             >
               Reset to default
             </button>
