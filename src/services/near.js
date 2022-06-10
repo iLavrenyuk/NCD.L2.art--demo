@@ -5,14 +5,14 @@ const getContractID = () => localStorage.getItem('CONTRACT_ID');
 const gas = new BN('100000000000000');
 
 // use new NEAR to avoid async/await
-export const near = new Near({
+export const config = new Near({
   networkId: 'testnet',
   keyStore: new keyStores.BrowserLocalStorageKeyStore(),
   nodeUrl: 'https://rpc.testnet.near.org',
   walletUrl: 'https://wallet.testnet.near.org',
 });
 
-export const wallet = () => new WalletConnection(near, getContractID());
+export const wallet = () => new WalletConnection(config, getContractID());
 
 export const signIn = (successUrl) => {
   return wallet().requestSignIn({ contractId: getContractID(), successUrl });
