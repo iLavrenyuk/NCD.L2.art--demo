@@ -11,15 +11,14 @@ The goal of this repository is to make it as easy as possible to get started wri
 ## ⚠️ Warning
 Any content produced by NEAR, or developer resources that NEAR provides, are for educational and inspiration purposes only. NEAR does not encourage, induce or sanction the deployment of any such applications in violation of applicable laws or regulations.
 
+![image](https://user-images.githubusercontent.com/48129985/173148121-89507d33-04a3-4f61-9fbe-725f13d1eadb.png)
 
 ## ⚡  Usage
 I recorded a short video in Loom, where I review "what is do" this project
 <a href="https://www.loom.com/share/8d4ca6ec67ec4d16bee3dcd04933c797" target="_blank">UI walkthrough</a>
 
 
-```
-
-To deploy sample--thanks to your account visit <a href="https://github.com/Learn-NEAR/NCD.L1.sample--art-demo" target="_blank">this repo (smart contract deployment instructions are inside):</a> 
+To deploy art--demo to your account visit <a href="https://github.com/Learn-NEAR/NCD.L1.sample--art-demo" target="_blank">this repo (smart contract deployment instructions are inside):</a> 
 
 
 After you successfully deployed registry and thanks contracts and you have contract ids, you can input them on a deployed <a href="art-demo-react.onrender.com/" target="_blank">website </a> or you can clone the repo and put contract ids inside .env file :
@@ -38,7 +37,6 @@ yarn
 ```
 yarn start
 ```
-
 Other commands:
 
 Compiles and minifies for production
