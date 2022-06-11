@@ -59,14 +59,13 @@ import { keyStores, Near, Contract, WalletConnection, utils } from "near-api-js"
 ```
 Then we are connecting to NEAR:
 ```
-// connecting to NEAR, new NEAR is being used here to avoid async/await
+// create config for connecting to NEAR
 const near = new Near({
     networkId: process.env.VUE_APP_networkId,
     keyStore: new keyStores.BrowserLocalStorageKeyStore(),
     nodeUrl: process.env.VUE_APP_nodeUrl,
     walletUrl: process.env.VUE_APP_walletUrl,
 });
-
 ``` 
 and creating wallet connection
 ```
